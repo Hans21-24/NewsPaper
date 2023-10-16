@@ -8,5 +8,7 @@ Product
 
 <!-- В контенте на странице мы выводим сам товар, идентификатор которого был передан в url -->
 {% block content %}
-<h1>{{ post }}</h1>
+<h1>{{ post.heading }}</h1>
+<h3>дата публикации {{ post.date_created|date:'d M Y'}}</h3>
+<h4>{{post.text}}</h4>
 {% endblock content %}
