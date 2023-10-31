@@ -1,5 +1,4 @@
-from datetime import datetime
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 # Импортируем класс, который говорит нам о том,
 # что в этом представлении мы будем выводить список объектов из БД
@@ -57,7 +56,8 @@ class PostDetail(DetailView):
 
 
 # Добавляем новое представление для создания товаров.
-class NewsCreate(CreateView):
+class NewsCreate(LoginRequiredMixin, CreateView):
+    raise_exception = True
     # Указываем нашу разработанную форму
     form_class = PostForm
     # модель новостей

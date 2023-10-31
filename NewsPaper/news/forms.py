@@ -9,7 +9,6 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = [
-            'author',
             'heading',
             'text',
             'postCategory',
