@@ -33,6 +33,11 @@ Posts
 
     <hr>
 
+    {# Теперь будем проверять не request.user.is_authenticated, а конкретные права #}
+    {% if perms.news.add_post %}
+    <a href="{% url 'news_create' %}">Создать</a>
+    {% endif %}
+
     <!-- Выводим посты, только если они есть с помощью тега if -->
     {% if posts %}
         <table>
@@ -62,7 +67,15 @@ Posts
                 <td>{{ post.text|truncatechars:20 }}</td>
                 <td>{{ post.category_type }}</td>
                 <td>{{ post.rating }}</td>
-                <!-- <td>{{ product.quantity }}</td> -->
+                <td>
+                    {# А здесь доступ для каждой ссылки теперь будем проверять отдельно #}
+                    {% if perms.news.change_post %}
+                    <a href="{% url 'post_update' post.id %}">Изменить</a>
+                    {% endif %}
+                    {% if perms.news.delete_post %}
+                    <a href="{% url 'post_delete' post.id %}">Удалить</a>
+                    {% endif %}
+                </td>
             </tr>
             {% endfor %}
         </table>
