@@ -144,7 +144,7 @@ def subscriptions(request):
                 category=OuterRef('pk'),
             )
         )
-    ).order_by('name')
+    ).order_by('category')
     return render(
         request,
         'subscriptions.html',
