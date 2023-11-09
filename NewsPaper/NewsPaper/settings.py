@@ -80,6 +80,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -155,7 +157,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignupForm"}
 
@@ -170,6 +172,7 @@ EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = "Hans21-24@yandex.ru"
 
 SERVER_EMAIL = "Hans21-24@yandex.ru"
+
 MANAGERS = (
     ('Ivan', 'ivan@yandex.ru'),
     ('Petr', 'petr@yandex.ru'),
