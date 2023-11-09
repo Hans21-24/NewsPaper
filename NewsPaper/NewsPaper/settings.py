@@ -168,3 +168,13 @@ EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
 DEFAULT_FROM_EMAIL = "Hans21-24@yandex.ru"
+
+SERVER_EMAIL = "Hans21-24@yandex.ru"
+MANAGERS = (
+    ('Ivan', 'ivan@yandex.ru'),
+    ('Petr', 'petr@yandex.ru'),
+)
+
+ADMINS = (
+    ('Hans', 'Hans21-24@yandex.ru'),
+)
