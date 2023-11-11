@@ -20,9 +20,13 @@ class Author(models.Model):
         self.authorRating = postRat * 3 + commRat
         self.save()
 
+    def __str__(self):
+        return self.authorUser.username
+
 
 class Category(models.Model):
     category = models.CharField(max_length=64, unique=True)
+    subscribers = models.ManyToManyField(User, related_name='categories')
 
     def __str__(self):
         return self.category.title()
@@ -64,6 +68,9 @@ class Post(models.Model):
 class PostCategory(models.Model):
     postThrough = models.ForeignKey(Post, on_delete=models.CASCADE)
     categoryThrough = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{ self.postThrough.heading} | { self.categoryThrough.category}'
 
 
 class Comment(models.Model):
