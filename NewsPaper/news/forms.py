@@ -7,10 +7,18 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = [
+            'author',
             'heading',
             'text',
-            'postCategory',
+            'category_type',
        ]
+
+        labels = {
+            'author': 'Автор',
+            'heading': 'Заголовок',
+            'text': 'Текст',
+            'category_type': 'Категория'
+        }
 
     def clean_name(self):
         name = self.cleaned_data["heading"]
