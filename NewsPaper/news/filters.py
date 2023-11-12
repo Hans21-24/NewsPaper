@@ -21,10 +21,11 @@ class PostFilter(FilterSet):
         # В fields мы описываем по каким полям модели
         # будет производиться фильтрация.
         fields = {
-           # поиск по названию
-           'heading': ['icontains'],
-           # поиск по категории
-           'postCategory': ['exact'],
-           # дата создания позже указанной даты
-           # 'date_created': ['lt'],
+            'author': ['exact'],
+            # поиск по названию
+            'heading': ['icontains'],
+            # поиск по категории
+            'postCategory': ['exact'],
+            # дата создания позже указанной даты
+            # 'date_created': ['lt'],
        }
