@@ -29,7 +29,7 @@ class Category(models.Model):
     subscribers = models.ManyToManyField(User, related_name='categories')
 
     def __str__(self):
-        return self.category.title()
+        return self.category
 
 
 class Post(models.Model):
