@@ -25,7 +25,7 @@ class PostFilter(FilterSet):
             # поиск по названию
             'heading': ['icontains'],
             # поиск по категории
-            'category_type': ['exact'],
+            'postCategory': ['exact'],
             # дата создания позже указанной даты
             # 'date_created': ['lt'],
        }

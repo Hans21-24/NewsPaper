@@ -10,15 +10,9 @@ class PostForm(forms.ModelForm):
             'author',
             'heading',
             'text',
-            'category_type',
+            'postCategory',
        ]
 
-        labels = {
-            'author': 'Автор',
-            'heading': 'Заголовок',
-            'text': 'Текст',
-            'category_type': 'Категория'
-        }
 
     def clean_name(self):
         name = self.cleaned_data["heading"]

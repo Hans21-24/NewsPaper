@@ -68,7 +68,7 @@ class NewsCreate(PermissionRequiredMixin, CreateView):
     # модель новостей
     model = Post
     # и новый шаблон, в котором используется форма.
-    template_name = 'post_edit.html'
+    template_name = 'post_create.html'
 
     def form_valid(self, form):
         post = form.save(commit=False)
