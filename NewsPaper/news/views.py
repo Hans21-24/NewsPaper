@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import Exists, OuterRef
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_protect
 # Импортируем класс, который говорит нам о том,
@@ -120,6 +120,44 @@ class ARDelete(PermissionRequiredMixin, DeleteView):
     template_name = 'post_delete.html'
     success_url = reverse_lazy('posts_list')
 
+
+class CategoryListView(ListView):
+    model = Post
+    template_name = 'category_list.html'
+    context_object_name = 'category_news_list'
+
+    def get_queryset(self):
+        self.postCategory = get_object_or_404(Category, id=self.kwargs['pk'])
+        queryset = Post.objects.filter(postCategory=self.postCategory).order_by('-date_created')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_not_subscriber'] = self.request.user not in self.postCategory.subscribers.all()
+        context['is_subscriber'] = self.request.user in self.postCategory.subscribers.all()
+        context['postCategory'] = self.postCategory
+        return context
+
+
+# @login_required
+# @csrf_protect
+# def subscribe(request, pk):
+#     user = request.user
+#     category = Category.objects.get(id=pk)
+#     category.subscribers.add(user)
+#
+#     message = 'Вы успешно подписались на рассылку новостей категории'
+#     return render(request, 'subscribe.html', {'postCategory': category, 'message': message})
+#
+# @login_required
+# @csrf_protect
+# def unsubscribe(request, pk):
+#     user = request.user
+#     category = Category.objects.get(id=pk)
+#     category.subscribers.remove(user)
+#
+#     message = 'Подписка отменена'
+#     return render(request, 'subscribe.html', {'postCategory': category, 'message': message})
 
 @login_required
 @csrf_protect

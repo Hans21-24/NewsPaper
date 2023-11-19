@@ -1,74 +1,54 @@
-<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
 {% extends 'flatpages/default.html' %}
 
-<!-- Подключаем свой созданный фильтр от censor_filter.py -->
 {% load censor_filter %}
 
-<!-- Подключаем свой созданный тег от custom_tags -->
 {% load custom_tags %}
 
-<!-- Название у нас будет Posts -->
 {% block title %}
 Posts
 {% endblock title %}
 
-<!-- В контенте на странице мы выводим все посты -->
 {% block content %}
     <h1>Всего публикаций</h1>
 
     <h1>{{ posts|length }}</h1>
 
-    <!-- Вот так выглядело использование переменной и фильтра -->
-    <!-- <h3>{{ time_now|date:'M d Y' }}</h3> -->
-    <!-- А вот так мы используем наш тег-->
     <h3>{% current_time '%b %d %Y' %}</h3>
 
-       {# Добавляем форму, которая объединяет набор полей, которые будут отправляться в запросе #}
     <form action="" method="get">
-       {# Переменная, которую мы передали через контекст, может сгенерировать нам форму с полями #}
        {{ filterset.form.as_p }}
-       {# Добавим кнопку отправки данных формы #}
        <input type="submit" value="Найти" />
     </form>
 
     <hr>
 
-    {# Теперь будем проверять не request.user.is_authenticated, а конкретные права #}
     {% if perms.news.add_post %}
     <a href="{% url 'news_create' %}">Создать</a>
     {% endif %}
 
-    <!-- Выводим посты, только если они есть с помощью тега if -->
     {% if posts %}
         <table>
             <tr>
                 <td>Заголовок</td>
                 <td>Дата публикации</td>
-                <td>Текст</td>
-                <td>Категория</td>
+                <td>Содержание</td>
+                <td>
+                    <a href="{% url 'subscriptions' %}">Категория</a>
+                </td>
                 <td>Рейтинг</td>
-                <!-- <td>Количество</td> -->
             </tr>
-            <!-- Для каждого товара будете генерироваться новая строчка,
-            т.е. новый HTML код, который указан в теле цикла.
-            При этом сам цикл работает точно так же, как и в Python.
-            product — переменная цикла, т.е. наш товар полученный из списка -->
             {% for post in posts %}
             <tr>
-                <!-- Не забываем, что переменные в шаблоне ничем не отличаются
-                от переменных в Python. Здесь также можно получать доступ к
-                полям объекта модели. Например, здесь мы выводим имя,
-                в следующем столбце описание, и т.д.  -->
                 <td>{{ post.heading|censor }}</td>
-                <!-- Добавим специальный фильтр truncatechars,
-                чтобы ограничить количество символов до 20.
-                Все остальные символы превратятся в многоточие. -->
                 <td>{{ post.date_created|date:'d M Y'}}</td>
                 <td>{{ post.text|truncatechars:20 }}</td>
-                <td>{{ post.category_type }}</td>
+                <td>
+                    {% for postCategory in post.postCategory.all %}
+                        <a href="{% url 'category_list' postCategory.id %}">{{ postCategory }}</a>
+                    {% endfor %}
+                </td>
                 <td>{{ post.rating }}</td>
                 <td>
-                    {# А здесь доступ для каждой ссылки теперь будем проверять отдельно #}
                     {% if perms.news.change_post %}
                     <a href="{% url 'post_update' post.id %}">Изменить</a>
                     {% endif %}
@@ -80,14 +60,10 @@ Posts
             {% endfor %}
         </table>
     {% else %}
-        <!-- Если Новостей нет, говорим, что Новостей нет ;) -->
         <h2>Новостей нет!</h2>
     {% endif %}
-        {# Добавляем пагинацию на страницу #}
 
-    {# Информация о предыдущих страницах #}
     {% if page_obj.has_previous %}
-        {# Для каждой ссылки пагинации указываем обработку через новый тег #}
         <a href="?{% url_replace page=1 %}">1</a>
         {% if page_obj.previous_page_number != 1 %}
             ...
@@ -95,10 +71,8 @@ Posts
         {% endif %}
     {% endif %}
 
-    {# Информация о текущей странице #}
     {{ page_obj.number }}
 
-    {# Информация о следующих страницах #}
     {% if page_obj.has_next %}
         <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
         {% if paginator.num_pages != page_obj.next_page_number %}
