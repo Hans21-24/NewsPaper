@@ -2,7 +2,7 @@ from django.urls import path
 # Импортируем созданное нами представление
 from .views import (
    PostsList, PostDetail, NewsCreate, NewsUpdate, NewsDelete, ARCreate, ARUpdate, ARDelete,
-   subscriptions, CategoryListView,
+   subscribe, CategoryListView, unsubscribe,
 )
 
 
@@ -14,8 +14,6 @@ urlpatterns = [
    # а Django ожидает функцию, нам надо представить этот класс в виде view.
    # Для этого вызываем метод as_view.
    path('', PostsList.as_view(), name='posts_list'),
-   # pk — это первичный ключ товара, который будет выводиться у нас в шаблон
-   # int — указывает на то, что принимаются только целочисленные значения
    path('<int:pk>', PostDetail.as_view(), name='post_detail'),
    path('news/create/', NewsCreate.as_view(), name='news_create'),
    path('news/<int:pk>/update/', NewsUpdate.as_view(), name='post_update'),
@@ -24,6 +22,7 @@ urlpatterns = [
    path('articles/<int:pk>/update/', ARUpdate.as_view(), name='post_update'),
    path('articles/<int:pk>/delete/', ARDelete.as_view(), name='post_delete'),
    path('categories/<int:pk>', CategoryListView.as_view(), name='category_list'),
-   # path('categories/<int:pk>/subscribe', subscribe, name='subscribe'),
-   path('subscriptions/', subscriptions, name='subscriptions'),
+   path('categories/<int:pk>/subscribe', subscribe, name='subscribe'),
+   path('categories/<int:pk>/unsubscribe', unsubscribe, name='unsubscribe'),
+   # path('subscriptions/', subscriptions, name='subscriptions'),
 ]

@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.flatpages',
     'fpages',
-    'news',
+    'news.apps.NewsConfig',
     'django_filters',
 
     'allauth',
@@ -185,3 +185,7 @@ MANAGERS = (
 ADMINS = (
     ('Hans', 'Hans21-24@yandex.ru'),
 )
+
+APSCHEDULER_DATETIME_FORMAT = 'N j, Y, f:s a'
+
+APSCHEDULER_RUN_NOW_TIMEOUT = 25

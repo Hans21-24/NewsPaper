@@ -8,6 +8,11 @@ Post
 
 {% block content %}
     <h1>Раздел {{postCategory}}</h1>
+        {% if is_not_subscriber %}
+            <p class="text-center"><a href="{% url 'subscribe' postCategory.id %}">Подписаться</a></p>
+        {% elif is_subscriber %}
+            <p class="text-center"><a href="{% url 'unsubscribe' postCategory.id %}">Отписаться</a></p>
+        {% endif %}
 
     <hr>
 
@@ -17,7 +22,6 @@ Post
                 <td>Заголовок</td>
                 <td>Дата</td>
                 <td>Содержание</td>
-
             </tr>
 
             {% for post in category_news_list %}
