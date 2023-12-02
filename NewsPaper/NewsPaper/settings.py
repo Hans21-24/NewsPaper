@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'fpages',
     'news.apps.NewsConfig',
     'django_filters',
-
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -165,7 +164,7 @@ ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignupForm"}
 
 SITE_URL = 'http://127.0.0.1:8000'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = "Hans21-24"
