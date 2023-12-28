@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.cache import cache
 from django.db import models
 from django.db.models import Sum
 from django.urls import reverse
@@ -49,6 +50,12 @@ class Post(models.Model):
     text = models.TextField()
     rating = models.SmallIntegerField(default=0)
     postCategory = models.ManyToManyField(Category, through='PostCategory')
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        # сначала вызываем метод родителя, чтобы объект сохранился
+        cache.delete(f'product-{self.pk}')
+        # затем удаляем его из кэша, чтобы сбросить его
 
     def like(self):
         self.rating +=1

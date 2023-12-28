@@ -22,6 +22,8 @@ Posts
 
     <hr>
 
+    {% load cache %}
+
     {% if perms.news.add_post %}
     <a href="{% url 'news_create' %}">Создать</a>
     {% endif %}
@@ -35,6 +37,7 @@ Posts
                 <td>Категория</td>
                 <td>Рейтинг</td>
             </tr>
+            {% cache 60 side %}
             {% for post in posts %}
             <tr>
                 <td>{{ post.heading|censor }}</td>
@@ -56,6 +59,7 @@ Posts
                 </td>
             </tr>
             {% endfor %}
+            {% endcache %}
         </table>
     {% else %}
         <h2>Новостей нет!</h2>

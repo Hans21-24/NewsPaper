@@ -1,3 +1,5 @@
+from linecache import cache
+
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
@@ -60,6 +62,20 @@ class PostDetail(DetailView):
     template_name = 'post.html'
     # Название объекта, в котором будет выбранный пользователем продукт
     context_object_name = 'post'
+
+    queryset = Post.objects.all()
+
+    def get_object(self, *args, **kwargs):
+        obj = cache.get(f'product-{self.kwargs["pk"]}', None)
+        # переопределяем метод получения объекта, как ни странно
+        # кэш очень похож на словарь, и метод get действует так же.
+        # Он забирает значение по ключу, если его нет, то забирает None.
+
+        # если объекта нет в кэше, то получаем его и записываем в кэш
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f'product-{self.kwargs["pk"]}', obj)
+            return obj
 
 
 
