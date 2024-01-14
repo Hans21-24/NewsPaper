@@ -26,8 +26,10 @@ class Author(models.Model):
 
 
 class Category(models.Model):
-    category = models.CharField(max_length=64, unique=True)
-    subscribers = models.ManyToManyField(User, related_name='categories')
+    category = models.CharField(max_length=64, unique=True, verbose_name='Категория')
+    subscribers = models.ManyToManyField(
+        User, related_name='categories', verbose_name='Подписчики'
+    )
 
     def get_category(self):
         return self.category
@@ -37,18 +39,20 @@ class Category(models.Model):
 
 
 class Post(models.Model):
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name='Автор')
     NEWS = "NW"
     ARTICLE = "AR"
     CHOICES_CATEGORY =(
         (NEWS, "Новости"),
         (ARTICLE, "Статьи"),
     )
-    category_type = models.CharField(max_length=2, choices=CHOICES_CATEGORY, default=ARTICLE)
-    date_created = models.DateTimeField(auto_now_add=True)
-    heading = models.CharField(max_length=128)
+    category_type = models.CharField(
+        max_length=2, choices=CHOICES_CATEGORY, default=ARTICLE, verbose_name='Тип'
+    )
+    date_created = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+    heading = models.CharField(max_length=128, verbose_name='Заголовок')
     text = models.TextField()
-    rating = models.SmallIntegerField(default=0)
+    rating = models.SmallIntegerField(default=0, verbose_name='Рейтинг')
     postCategory = models.ManyToManyField(Category, through='PostCategory')
 
     def save(self, *args, **kwargs):

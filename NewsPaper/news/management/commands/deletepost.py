@@ -21,15 +21,3 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.ERROR(f'Категория {category.category} не найдена.'))
         else:
             self.stdout.write(self.style.ERROR(f'Удаление отменено.'))
-
-
-
-
-
-
-
-
-    # def product_material(self, product):
-    #     return ', '.join([material.name for material in product.material.all()])
-    #
-    # list_display = ('id', 'name', 'description', 'quantity', 'category', 'price', 'product_material')
