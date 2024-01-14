@@ -1,9 +1,8 @@
-from linecache import cache
-
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.models import User
+from django.core.cache import cache
 from django.core.mail import EmailMultiAlternatives
 from django.db.models import Exists, OuterRef
 from django.shortcuts import render, get_object_or_404, redirect
@@ -66,7 +65,7 @@ class PostDetail(DetailView):
     queryset = Post.objects.all()
 
     def get_object(self, *args, **kwargs):
-        obj = cache.get(f'product-{self.kwargs["pk"]}', None)
+        obj = cache.get(f'post-{self.kwargs["pk"]}', None)
         # переопределяем метод получения объекта, как ни странно
         # кэш очень похож на словарь, и метод get действует так же.
         # Он забирает значение по ключу, если его нет, то забирает None.
@@ -74,8 +73,8 @@ class PostDetail(DetailView):
         # если объекта нет в кэше, то получаем его и записываем в кэш
         if not obj:
             obj = super().get_object(queryset=self.queryset)
-            cache.set(f'product-{self.kwargs["pk"]}', obj)
-            return obj
+            cache.set(f'post-{self.kwargs["pk"]}', obj)
+        return obj
 
 
 

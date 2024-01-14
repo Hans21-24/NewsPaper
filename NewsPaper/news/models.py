@@ -54,7 +54,7 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         # сначала вызываем метод родителя, чтобы объект сохранился
-        cache.delete(f'product-{self.pk}')
+        cache.delete(f'post-{self.pk}')
         # затем удаляем его из кэша, чтобы сбросить его
 
     def like(self):
