@@ -67,6 +67,116 @@ MIDDLEWARE = [
 
     'allauth.account.middleware.AccountMiddleware',
 ]
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+
+    'formatters': {
+        'console_debug': {
+            'format': '%(asctime)s %(levelname)s %(message)s',
+        },
+        'console_warning': {
+            'format': '%(asctime)s %(levelname)s %(message)s %(pathname)s',
+        },
+        'console_error': {
+            'format': '%(asctime)s %(levelname)s %(message)s %(pathname)s %(exc_info)s',
+        },
+        'console_critical': {
+            'format': '%(asctime)s %(levelname)s %(message)s %(pathname)s %(exc_info)s',
+        },
+        'console_info': {
+            'format': '%(asctime)s %(levelname)s %(module)s %(message)s'
+        }
+    },
+
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        }
+    },
+
+    'handlers': {
+        'cons_debug': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'console_debug'
+        },
+        'cons_warning': {
+            'level': 'WARNING',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'console_warning'
+        },
+        'cons_error': {
+            'level': 'ERROR',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'console_error'
+        },
+        'cons_critical': {
+            'level': 'CRITICAL',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'console_critical'
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'console_warning'
+        },
+        'general_log': {
+            'level': 'INFO',
+            'filters': ['require_debug_false'],
+            'class': 'logging.FileHandler',
+            'filename': 'general.log',
+            'formatter': 'console_info'
+        },
+        'error_log': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'error.log',
+            'formatter': 'console_error'
+        },
+        'security_log': {
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'filename': 'security.log',
+            'formatter': 'console_info'
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console_debug', 'console_warning', 'console_critical', 'console_error'],
+            'level': 'DEBUG',
+            'propagate': True
+        },
+        'django.request': {
+            'handlers': ['mail_admins', 'errors_log'],
+            'propagate': True
+        },
+        'django.server': {
+            'handlers': ['mail_admins', 'errors_log'],
+            'propagate': True
+        },
+        'django.template': {
+            'handlers': ['errors_log'],
+            'propagate': True
+        },
+        'django.db.backends': {
+            'handlers': ['errors_log'],
+            'propagate': True
+        },
+        'django.security': {
+            'handlers': ['security_log'],
+            'propagate': False
+        }
+    }
+}
 
 ROOT_URLCONF = 'NewsPaper.urls'
 
@@ -99,11 +209,22 @@ WSGI_APPLICATION = 'NewsPaper.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'django',
+        'USER': 'hans21_24',
+        'PASSWORD': 'admin',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    },
 }
 
 
