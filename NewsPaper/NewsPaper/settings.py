@@ -100,7 +100,7 @@ LOGGING = {
 
     'handlers': {
         'cons_debug': {
-            'level': 'DEBUG',
+            'level': 'ERROR',
             'filters': ['require_debug_true'],
             'class': 'logging.StreamHandler',
             'formatter': 'console_debug'
@@ -151,24 +151,24 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers': ['console_debug', 'console_warning', 'console_critical', 'console_error'],
+            'handlers': ['cons_debug', 'cons_warning', 'cons_critical', 'cons_error'],
             'level': 'DEBUG',
             'propagate': True
         },
         'django.request': {
-            'handlers': ['mail_admins', 'errors_log'],
+            'handlers': ['mail_admins', 'error_log'],
             'propagate': True
         },
         'django.server': {
-            'handlers': ['mail_admins', 'errors_log'],
+            'handlers': ['mail_admins', 'error_log'],
             'propagate': True
         },
         'django.template': {
-            'handlers': ['errors_log'],
+            'handlers': ['error_log'],
             'propagate': True
         },
         'django.db.backends': {
-            'handlers': ['errors_log'],
+            'handlers': ['error_log'],
             'propagate': True
         },
         'django.security': {
